@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+        <description>Mybatis 整合的配置文件</description>
+        <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+            <!--mybatis配置文件-->
+            <property name="configLocation" value="classpath:mybatis-config.xml"/>
+            <!--数据源-->
+            <property name="dataSource" ref="dataSource"/>
+            <!--对应的mapper文件路径-->
+            <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+        </bean>
+        <!--扫描dao层下的所有类路径将这个放入ioc容器中-->
+        <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+            <property name="basePackage" value="cn.lonecloud.dao"/>
+        </bean>
+</beans>

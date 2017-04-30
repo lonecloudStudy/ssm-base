@@ -1,0 +1,52 @@
+# Created by .ignore support plugin (hsz.mobi)
+### Java template
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+### Magento template
+#--------------------------#
+# Magento Default Files    #
+#--------------------------#
+
+/app/etc/local.xml
+/media/*
+!/media/.htaccess
+!/media/customer/.htaccess
+!/media/dhl/logo.jpg
+!/media/downloadable/.htaccess
+!/media/xmlconnect/custom/ok.gif
+!/media/xmlconnect/original/ok.gif
+!/media/xmlconnect/system/ok.gif
+/var/*
+!/var/.htaccess
+!/var/package/*.xml
+
+.DS_Store
+.gitignore
+.idea/
+src/.DS_Store
+src/main/java/cn/lonecloud/controller/
+src/main/java/cn/lonecloud/service/
+src/main/java/cn/lonecloud/utils/
+src/test/resources/
+ssm-restful.iml
+target/
