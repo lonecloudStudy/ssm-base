@@ -123,7 +123,7 @@
     </select>
     <!--带部门信息-->
     <sql id="WithDeptBase_Column_List">
-        u.id, u.name, u.sex, u.email, u.d_id,t.id,t.name
+        u.id, u.name, u.sex, u.email, u.t_id,t.id,t.name
     </sql>
     <select id="selectByExampleWithDept" resultMap="BaseResultMap" parameterType="cn.lonecloud.bean.UserExample">
         select
@@ -131,7 +131,7 @@
             distinct
         </if>
         <include refid="WithDeptBase_Column_List"/>
-        from tbl_user u OUTER JOIN tbl_dept t on tbl_user.id=tbl_dept.id
+        from tbl_user u LEFT OUTER JOIN tbl_dept t on u.id=t.id
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>
         </if>
@@ -150,7 +150,7 @@
     <select id="selectByPrimaryKeyWithDept" resultMap="BaseResultMap" parameterType="java.lang.String">
         select
         <include refid="WithDeptBase_Column_List"/>
-        from tbl_user u OUTER JOIN tbl_dept t on tbl_user.id=tbl_dept.id
+        from tbl_user u LEFT OUTER JOIN tbl_dept t on u.id=t.id
         where id = #{id,jdbcType=VARCHAR}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">

@@ -44,9 +44,5 @@ hs_err_pid*
 .gitignore
 .idea/
 src/.DS_Store
-src/main/java/cn/lonecloud/controller/
-src/main/java/cn/lonecloud/service/
-src/main/java/cn/lonecloud/utils/
-src/test/resources/
 ssm-restful.iml
 target/
