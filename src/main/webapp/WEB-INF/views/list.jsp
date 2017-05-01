@@ -30,6 +30,7 @@
     <div class="row">
         <div class="col-md-12">
             <table class="table table-hover">
+                <thead>
                 <tr>
                     <th>id</th>
                     <th>名字</th>
@@ -38,6 +39,8 @@
                     <th>开发部门</th>
                     <th>操作</th>
                 </tr>
+                </thead>
+                <tbody>
                 <c:forEach items="${pageInfo.list}" var="user">
                     <tr>
                         <td>${user.id}</td>
@@ -57,6 +60,7 @@
                         </td>
                     </tr>
                 </c:forEach>
+                </tbody>
             </table>
         </div>
     </div>
@@ -64,7 +68,7 @@
     <div class="row">
         <%--文字信息--%>
         <div class="col-md-4">
-            当前${pageInfo.pageNum}页,总${pageInfo.pageSize}页,总共${pageInfo.total}条记录
+            当前${pageInfo.pageNum}页,总${pageInfo.pages }页,总共${pageInfo.total}条记录
         </div>
         <%--分页条--%>
         <div class="col-md-8">

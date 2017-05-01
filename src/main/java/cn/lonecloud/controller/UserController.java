@@ -39,7 +39,11 @@ public class UserController {
         PageHelper.startPage(page, 5);
         List<User> users = userService.selectAll();
         PageInfo pageInfo = new PageInfo(users);
-        return Msg.success().add("pageinfo", pageInfo);
+        return Msg.success().add("pageInfo", pageInfo);
+    }
+    @RequestMapping("/list-ajax")
+    public String ajaxIndex(){
+        return "/list-ajax";
     }
 
 }
