@@ -1,5 +1,7 @@
 package cn.lonecloud.bean;
 
+import java.util.Date;
+
 public class User {
 
     private String id;
@@ -16,6 +18,9 @@ public class User {
     private String tId;
 
     private Department department;
+
+    private Date createTime;
+
 
     public Department getDepartment() {
         return department;
@@ -69,5 +74,13 @@ public class User {
 
     public void settId(String tId) {
         this.tId = tId;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

@@ -22,7 +22,7 @@
     <%--显示按钮--%>
     <div class="row">
         <div class="col-md-4 col-md-offset-8">
-            <button class="btn btn-primary">新增</button>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#user-add-model">新增</button>
             <button class="btn btn-danger">删除</button>
         </div>
     </div>
@@ -61,7 +61,62 @@
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="user-add-model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">新增员工</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="name" class="col-sm-2 control-label">姓名</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="name" placeholder="请输入名字" name="name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="sex">性别:</label>
+                        <div class="col-sm-10">
+                            <label class="radio-inline">
+                                <input type="radio" name="sex" id="sex" value="M" checked> 男
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="sex" id="sex1" value="F"> 女
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="col-sm-2 control-label">Email</label>
+                        <div class="col-sm-10">
+                            <input type="email" class="form-control" id="email" placeholder="Email" name="email">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">部门名称</label>
+                        <div class="col-sm-10">
+                            <select name="department.name" id="dept" class="form-control">
+                                <c:forEach items="${applicationScope.departments}" var="department">
+                                    <option value="${department.id}">${department.name}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="btn-user-save">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
+    var total = 9999;
     $(
             function () {
                 toPage(1);
@@ -76,6 +131,7 @@
                         success: function (msg) {
                             //
                             //alert("success");
+                            total = msg.data.pageInfo.total;
                             build_users_table(msg.data);
                             build_page_info(msg.data);
                             build_page_nav(msg.data);
@@ -111,8 +167,7 @@
                                         $("<span></span>").addClass("glyphicon glyphicon-trash")
                                 ).append("删除  ")
                         )
-                        $("<tr><tr/>").append(userId).append(userName).append(userSex).append(userEmail).append(userDept).append(editTr).appendTo($table);
-
+                        var $tr = $("<tr></tr>").append(userId).append(userName).append(userSex).append(userEmail).append(userDept).append(editTr).appendTo($table);
                     });
                 }
 
@@ -127,20 +182,6 @@
                             "条记录")
                 }
 
-//        <li><a href="">首页</a></li>
-//                <li>
-//                <a href="" aria-label="Previous">
-//                <span aria-hidden="true">&laquo;</span>
-//        </a>
-//        </li>
-//        <li class="active"><a href=""></a></li>
-//                <li><a href=""></a></li>
-//                <li>
-//                <a href="" aria-label="Next">
-//                <span aria-hidden="true">&raquo;</span>
-//        </a>
-//        </li>
-//        <li><a href="">末页</a></li>
                 /**
                  *构建表格底部分页栏
                  * @param data
@@ -155,7 +196,7 @@
                     if (data.pageInfo.hasPreviousPage == false) {
                         first.addClass("disabled");
                         previous.addClass("disabled");
-                    }else{
+                    } else {
                         first.click(function () {
                             toPage(1);
                         });
@@ -166,7 +207,7 @@
                     if (data.pageInfo.hasNextPage == false) {
                         last.addClass("disabled");
                         next.addClass("disabled");
-                    }else{
+                    } else {
                         last.click(function () {
                             toPage(data.pageInfo.pages);
                         });
@@ -178,7 +219,7 @@
                     $.each(data.pageInfo.navigatepageNums, function (index, num) {
                         var indexBlock = $("<li></li>").append($("<a></a>").append(num).attr("href", "#"));
                         //判断是不是当前页
-                        if (num  == data.pageInfo.pageNum) {
+                        if (num == data.pageInfo.pageNum) {
                             indexBlock.addClass("active");
                         }
                         indexBlock.click(function () {
@@ -189,6 +230,119 @@
                     $nav.append(next)
                     $nav.append(last);
                 }
+            });
+    //    function validate_form() {
+    //        if (validate("#name", /^[a-z0-9_-\u2E80-\u9FFF]{3,16}$/, "用户名错误,请输入3-16位中文或者英文")) {
+    //            if (validate("#email", /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/, "邮箱错误")) {
+    //                return true;
+    //            }
+    //        }
+    //        return false;
+    //    }
+    <%--$("#name").change(function () {--%>
+    <%--$.ajax({--%>
+    <%--url: "${ctx}/checkUserName",--%>
+    <%--type: "POST",--%>
+    <%--data: {--%>
+    <%--name: $(this).val()--%>
+    <%--},--%>
+    <%--success: function (data) {--%>
+    <%--if (data.code == "ERROR") {--%>
+
+    <%--}--%>
+    <%--}--%>
+    <%--})--%>
+    <%--});--%>
+    //    /**
+    //     * 校验函数
+    //     * @param ele
+    //     * @param reg
+    //     * @param errMsg
+    //     * @param fn 特殊校验函数
+    //     */
+    //    function validate(ele, reg, errMsg) {
+    //        var $ele = $(ele);
+    //        $ele.parent().removeClass("has--success has-error");
+    //        $ele.next("span").text("");
+    //        if (!reg.test($ele.val())) {
+    //            $ele.parent().addClass("has-error");
+    //            $ele.parent().append($("<span></span>").addClass("has-error").append(errMsg));
+    //            return false;
+    //        } else {
+    //            $ele.parent().addClass("has-success");
+    //        }
+    //        return true;
+    //    }
+    //保存
+    $("#btn-user-save").click(function () {
+//        if (!validate_form()) {
+//            return false;
+//        }
+        var data = $("#user-add-model form").serialize();
+        $.ajax({
+            url: "${ctx}/user",
+            type: "POST",
+            data: data,
+            success: function (data) {
+                if (data.code == "SUCCESS") {
+                    alert(data.message);
+                }
+                $("#user-add-model").modal("hide");
+                toPage(total);
+            }
+        })
+    });
+
+    $('#user-add-model form')
+            .bootstrapValidator({
+                //lanuage:"zh_CN",
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    name: {
+                        validators: {
+                            notEmpty: {},
+                            stringLength: {
+                                min: 6,
+                                max: 30,
+                            },
+                            remote: {
+                                url: '${ctx}/checkUserName',
+                                type:"POST",
+                                delay :  2000,
+                                message: '用户名已经存在'
+                            },
+                            regexp: {
+                                regexp: /^[a-z0-9\u2E80-\u9FFF]{3,16}$/,
+                                message:"用户名不能通过认证"
+                            }
+                        }
+                    },
+                    email: {
+                        validators: {
+                            notEmpty: {},
+                            emailAddress: {}
+                        }
+                    }
+                }
+            })
+            .on('success.form.bv', function (e) {
+                // Prevent form submission
+                e.preventDefault();
+
+                // Get the form instance
+                var $form = $(e.target);
+
+                // Get the BootstrapValidator instance
+                var bv = $form.data('bootstrapValidator');
+
+                // Use Ajax to submit form data
+                $.post($form.attr('action'), $form.serialize(), function (result) {
+                    console.log(result);
+                }, 'json');
             });
 </script>
 </body>

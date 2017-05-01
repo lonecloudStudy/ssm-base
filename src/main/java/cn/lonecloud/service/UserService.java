@@ -10,4 +10,14 @@ import java.util.List;
 public interface UserService {
 
     List<User> selectAll();
+
+    void save(User user);
+
+    void update(User user);
+
+    void deleteById(String id);
+
+    User selectById(String id);
+
+    boolean checkUserName(String name);
 }

@@ -1,5 +1,6 @@
 package cn.lonecloud.test.mybatis;
 
+import cn.lonecloud.bean.Department;
 import cn.lonecloud.bean.User;
 import cn.lonecloud.dao.UserMapper;
 import cn.lonecloud.utils.StringUtils;
@@ -12,6 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.Random;
 
 /**
@@ -46,6 +48,7 @@ public class EmployeeTest  {
             user.setName(name);
             user.setSex(random.nextInt(2)>0?"M":"F");
             user.setEmail(name+"@qq.com");
+            user.setCreateTime(new Date());
             mapper.insert(user);
         }
         long end=System.currentTimeMillis()-now;
