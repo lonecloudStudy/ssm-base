@@ -1,17 +1,20 @@
 package cn.lonecloud.bean;
 
+import org.hibernate.validator.constraints.Email;
+
+import javax.validation.constraints.Pattern;
 import java.util.Date;
 
 public class User {
 
     private String id;
 
-
+    @Pattern(regexp = "[\\u4e00-\\u9fa5_a-zA-Z0-9_]{4,10}",message = "用户名错误")
     private String name;
 
 
     private String sex;
-
+    @Email
     private String email;
 
 

@@ -1,7 +1,6 @@
 package cn.lonecloud.listener;
 
 import cn.lonecloud.service.DepartmentService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 

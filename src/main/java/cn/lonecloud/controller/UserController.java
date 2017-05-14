@@ -8,10 +8,16 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by lonecloud on 17/4/30.
@@ -57,7 +63,17 @@ public class UserController {
      */
     @RequestMapping(value = "/user", method = RequestMethod.POST)
     @ResponseBody
-    public Msg saveUser(User user) {
+    public Msg saveUser(@Valid User user, BindingResult result) {
+        if (result.hasErrors()) {
+            //获取所有的错误信息
+            Map<String,String> message=new HashMap<>();
+            List<FieldError> allErrors = result.getFieldErrors();
+            for (FieldError error :
+                    allErrors) {
+                message.put(error.getField(),error.getDefaultMessage());
+            }
+            return Msg.error().add("message",message);
+        }
         user.setCreateTime(new Date());
         userService.save(user);
         return Msg.success();
@@ -84,9 +100,9 @@ public class UserController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/user/${id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/user/", method = RequestMethod.DELETE)
     @ResponseBody
-    public Msg deleteUser(@PathVariable("id") String id) {
+    public Msg deleteUser(@RequestParam("id") String id) {
         userService.deleteById(id);
         return Msg.success();
     }
@@ -105,12 +121,14 @@ public class UserController {
 
     /**
      * 查询是不是有这个用户
+     *
      * @param name
      * @return
      */
     @RequestMapping(value = "/checkUserName", method = RequestMethod.POST)
     @ResponseBody
     public String checkUserName(String name) {
-        return "valid:"+userService.checkUserName(name);
+        return "valid:" + userService.checkUserName(name);
     }
+
 }

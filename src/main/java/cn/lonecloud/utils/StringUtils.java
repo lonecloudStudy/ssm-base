@@ -11,4 +11,11 @@ public class StringUtils {
         return UUID.randomUUID().toString().replaceAll("-","");
     }
 
+
+    public static String getPath(){
+       return  StringUtils.class.getClassLoader().getResource("").getPath();
+    }
+    public static String getWebPath(){
+       return StringUtils.class.getClassLoader().getResource("").getPath().replace("/classes","");
+    }
 }

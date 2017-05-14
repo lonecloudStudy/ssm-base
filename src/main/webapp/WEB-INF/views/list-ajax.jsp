@@ -158,15 +158,16 @@
                         var userSex = $("<td></td>").append(user.sex == 'M' ? "男" : "女");
                         var userEmail = $("<td></td>").append(user.email);
                         var userDept = $("<td></td>").append(user.department);
-                        var editTr = $("<td></td>").append(
-                                $("<button></button>").addClass("btn btn-primary btn-sm").append(
-                                        $("<span></span>").addClass("glyphicon glyphicon-pencil")
-                                ).append("编辑  ")
-                        ).append(
-                                $("<button></button>").addClass("btn btn-danger btn-sm").append(
-                                        $("<span></span>").addClass("glyphicon glyphicon-trash")
-                                ).append("删除  ")
-                        )
+                        var editBtn = $("<button></button>").addClass("btn btn-primary btn-sm").append(
+                                $("<span></span>").addClass("glyphicon glyphicon-pencil")
+                        ).append("编辑  ");
+                        var delBtn = $("<button></button>").addClass("btn btn-danger btn-sm").append(
+                                $("<span></span>").addClass("glyphicon glyphicon-trash")
+                        ).append("删除  ");
+                        delBtn.click(function () {
+                            delUser(user.id);
+                        });
+                        var editTr = $("<td></td>").append(editBtn).append(delBtn);
                         var $tr = $("<tr></tr>").append(userId).append(userName).append(userSex).append(userEmail).append(userDept).append(editTr).appendTo($table);
                     });
                 }
@@ -311,13 +312,13 @@
                             },
                             remote: {
                                 url: '${ctx}/checkUserName',
-                                type:"POST",
-                                delay :  2000,
+                                type: "POST",
+                                delay: 2000,
                                 message: '用户名已经存在'
                             },
                             regexp: {
-                                regexp: /^[a-z0-9\u2E80-\u9FFF]{3,16}$/,
-                                message:"用户名不能通过认证"
+                                regexp: /[\u4e00-\u9fa5_a-zA-Z0-9_]{4,10}/,
+                                message: "用户名不能通过认证"
                             }
                         }
                     },
@@ -344,6 +345,27 @@
                     console.log(result);
                 }, 'json');
             });
+    function delUser(id) {
+        $.ajax(
+                {
+                    url: "${ctx}/user/",
+                    type: "POST",
+                    data: {
+                        id: id,
+                        _method: "DELETE"
+                    },
+                    success:function (data) {
+                        if(data.code=="SUCCESS"){
+                            alert("删除成功");
+                            window.location.reload();
+                        }
+                    },
+                    error:function () {
+                        alert("请求失败");
+                    }
+                }
+        )
+    }
 </script>
 </body>
 </html>

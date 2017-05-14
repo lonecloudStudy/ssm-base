@@ -4,9 +4,12 @@ import cn.lonecloud.bean.User;
 import cn.lonecloud.bean.UserExample;
 import cn.lonecloud.dao.UserMapper;
 import cn.lonecloud.service.UserService;
+import cn.lonecloud.utils.RequestUtils;
+import cn.lonecloud.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -47,6 +50,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean checkUserName(String name) {
+        HttpServletRequest request = RequestUtils.getRequest();
+        System.out.println(request.getServletContext().getRealPath("/"));
+        System.out.println("WEB------"+StringUtils.getWebPath());
         UserExample example=new UserExample();
         UserExample.Criteria criteria = example.createCriteria();
         criteria.andNameEqualTo(name);
